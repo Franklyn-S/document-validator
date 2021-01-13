@@ -5,7 +5,7 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import {Home, Login, Register, ValidateDocument} from './screens';
+import {Home, Login, Register, ValidateDocument, Documents} from './screens';
 
 const Routes = () => {
   return (
@@ -14,6 +14,7 @@ const Routes = () => {
         <Route path='/login' component={Login} />
         <Route path='/register' exact={true} component={Register} />
         <Route path='/home' exact={true} component={Home} />
+        <Route path='/documents' exact={true} component={Documents} />
         <Route
           path='/validate-document'
           exact={true}
