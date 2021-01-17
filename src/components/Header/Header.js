@@ -1,39 +1,49 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
+import useAuth from '../../hooks/useAuth';
+import { LogoutButton } from './style';
 
 const Header = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { isAuthenticated, logout } = useAuth();
+  const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
+
+  useEffect(() => {
+    setIsUserAuthenticated(isAuthenticated());
+  });
   return (
-    <nav className='navbar navbar-default'>
-      <div className='container-fluid'>
-        <div className='navbar-header'>
-          <a className='navbar-brand' href='/'>
+    <nav className="navbar navbar-default">
+      <div className="container-fluid">
+        <div className="navbar-header">
+          <a className="navbar-brand" href="/">
             Validador de documentos
           </a>
         </div>
-        <div className='navbar-default'>
-          <ul className='nav navbar-nav'>
-            {isAuthenticated && (
+        <div className="navbar-default">
+          <ul className="nav navbar-nav">
+            {isUserAuthenticated && (
               <li>
-                <a href='/documents'>Documentos</a>
+                <a href="/documents">Documentos</a>
               </li>
             )}
-            {isAuthenticated && (
+            {isUserAuthenticated && (
               <li>
-                <button onClick={() => {}} style='cursor: pointer;'>
+                <LogoutButton onClick={logout} style={{ cursor: 'pointer' }}>
                   Logout
-                </button>
+                </LogoutButton>
               </li>
             )}
-            {!isAuthenticated && (
+            {!isUserAuthenticated && (
               <li>
-                <a href='/'>Logar</a>
+                <a href="/">Logar</a>
               </li>
             )}
-            {!isAuthenticated && (
+            {!isUserAuthenticated && (
               <li>
-                <a href='/register'>Cadastre-se</a>
+                <a href="/register">Cadastre-se</a>
               </li>
             )}
+            <li>
+              <a href="/validate-document">Validar Documento</a>
+            </li>
           </ul>
         </div>
       </div>
