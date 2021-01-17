@@ -94,7 +94,6 @@ const useAuth = () => {
     getAuthenticatedUser().signOut();
     setUserSession(null);
     setRegisteredUser(null);
-    window.location.href = '/';
   };
 
   const isAuthenticated = () => {

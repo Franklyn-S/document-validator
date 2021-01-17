@@ -4,11 +4,7 @@ import { LogoutButton } from './style';
 
 const Header = () => {
   const { isAuthenticated, logout } = useAuth();
-  const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
 
-  useEffect(() => {
-    setIsUserAuthenticated(isAuthenticated());
-  });
   return (
     <nav className="navbar navbar-default">
       <div className="container-fluid">
@@ -19,24 +15,24 @@ const Header = () => {
         </div>
         <div className="navbar-default">
           <ul className="nav navbar-nav">
-            {isUserAuthenticated && (
+            {isAuthenticated() && (
               <li>
                 <a href="/documents">Documentos</a>
               </li>
             )}
-            {isUserAuthenticated && (
+            {isAuthenticated() && (
               <li>
-                <LogoutButton onClick={logout} style={{ cursor: 'pointer' }}>
+                <a href="/" onClick={logout} style={{ cursor: 'pointer' }}>
                   Logout
-                </LogoutButton>
+                </a>
               </li>
             )}
-            {!isUserAuthenticated && (
+            {!isAuthenticated() && (
               <li>
                 <a href="/">Logar</a>
               </li>
             )}
-            {!isUserAuthenticated && (
+            {!isAuthenticated() && (
               <li>
                 <a href="/register">Cadastre-se</a>
               </li>
