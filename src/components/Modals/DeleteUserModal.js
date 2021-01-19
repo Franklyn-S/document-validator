@@ -1,15 +1,32 @@
 import React from 'react';
+import useService from '../../hooks/useService';
+import $ from 'jquery';
 
-const DeleteModal = ({ userId }) => {
-  const deleteUser = e => {
+const DeleteUserModal = ({
+  userId,
+  error,
+  setError,
+  setMessage,
+  setShowAlert,
+}) => {
+  const { deleteUser } = useService();
+  const handleDelete = async e => {
     e.preventDefault();
+    await deleteUser(userId, setError, setMessage);
+    setShowAlert(true);
+    console.log('test');
+    if (!error) {
+      $('.close').click();
+    } else {
+      console.log(error);
+    }
     console.log(userId + ' deletado');
   };
   return (
-    <div id="deleteEmployeeModal" className="modal fade">
+    <div id="deleteUserModal" className="modal fade">
       <div className="modal-dialog">
         <div className="modal-content">
-          <form onSubmit={deleteUser}>
+          <form onSubmit={handleDelete}>
             <div className="modal-header">
               <h4 className="modal-title">Deletar Usuário</h4>
               <button
@@ -43,4 +60,4 @@ const DeleteModal = ({ userId }) => {
   );
 };
 
-export default DeleteModal;
+export default DeleteUserModal;

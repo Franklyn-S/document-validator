@@ -1,39 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { validationService } from '../utils';
 import { useParams } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import Card from '../components/Card';
+import useService from '../hooks/useService';
 
 const DocumentData = () => {
   const [validations, setValidations] = useState();
   const [error, setError] = useState(null);
   const { getAuthenticatedUser } = useAuth();
+  const { getValidationsByDocumentId } = useService();
   const { id } = useParams();
   useEffect(() => {
-    const getValidationsByDocumentId = () => {
-      getAuthenticatedUser().getSession((err, session) => {
-        if (err) {
-          setError(err);
-          return;
-        }
-        axios
-          .get(validationService(id), {
-            headers: {
-              Authorization: session.getIdToken().getJwtToken(),
-            },
-          })
-          .then(result => {
-            console.log(result);
-            setValidations(result.data);
-          })
-          .catch(err => setError(err));
-      });
-    };
     if (!error && !validations) {
-      getValidationsByDocumentId();
+      getValidationsByDocumentId(id, setError, setValidations);
     }
-  }, [id, getAuthenticatedUser, error, validations]);
+  }, [
+    id,
+    getAuthenticatedUser,
+    error,
+    validations,
+    getValidationsByDocumentId,
+  ]);
   console.log(validations);
   return (
     <div className="container d-flex justify-content-start flex-wrap align-content-start">

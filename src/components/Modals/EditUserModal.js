@@ -1,24 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import useService from '../../hooks/useService';
+import $ from 'jquery';
 
-const AddModal = () => {
-  const [fullName, setFullName] = useState('');
-  const [userName, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+const EditUserModal = ({ user, error, setError, setMessage, setShowAlert }) => {
+  const [fullName, setFullName] = useState(user.name || '');
+  const [userName, setUsername] = useState(user.username || '');
+  const [email, setEmail] = useState(user.email || '');
+  const [password, setPassword] = useState(user.password || '');
 
-  const addUser = e => {
+  const { putUser } = useService();
+
+  useEffect(() => {
+    setFullName(user.name || '');
+    setUsername(user.username || '');
+    setEmail(user.email || '');
+    setPassword(user.password || '');
+  }, [user]);
+
+  const EditUser = async e => {
     e.preventDefault();
-    console.log('Usuário Adicioando');
+    await putUser(
+      { id: user.id, name: fullName, username: userName, password, email },
+      setError,
+      setMessage
+    );
+    setShowAlert(true);
+    if (error) {
+      console.log(error);
+    } else {
+      $('.close').click();
+    }
+    console.log('Usuário Editado');
   };
-
   return (
-    <div id="addUserModal" className="modal fade">
+    <div id="editUserModal" className="modal fade">
       <div className="modal-dialog">
         <div className="modal-content">
-          <form onSubmit={addUser}>
+          <form onSubmit={EditUser}>
             <div className="modal-header">
-              <h4 className="modal-title">Adicionar Usuário</h4>
+              <h4 className="modal-title">Editar Usuário</h4>
               <button
                 type="button"
                 className="close"
@@ -69,16 +89,6 @@ const AddModal = () => {
                   required
                 />
               </div>
-              <div className="form-group">
-                <label>Confirmar Senha</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  value={confirmPassword}
-                  onChange={e => setConfirmPassword(e.target.value)}
-                  required
-                />
-              </div>
             </div>
             <div className="modal-footer">
               <input
@@ -87,11 +97,7 @@ const AddModal = () => {
                 data-dismiss="modal"
                 value="Cancelar"
               />
-              <input
-                type="submit"
-                className="btn btn-success"
-                value="Adicionar"
-              />
+              <input type="submit" className="btn btn-success" value="Salvar" />
             </div>
           </form>
         </div>
@@ -100,4 +106,4 @@ const AddModal = () => {
   );
 };
 
-export default AddModal;
+export default EditUserModal;
