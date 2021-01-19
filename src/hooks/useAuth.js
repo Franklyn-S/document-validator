@@ -55,7 +55,7 @@ const useAuth = () => {
       }
       setError(null);
       console.log(result);
-      window.location.href = '/';
+      window.location.href = '/document-validator/';
     });
   };
 
@@ -76,7 +76,7 @@ const useAuth = () => {
         setError(null);
         setLoading(false);
         setUserSession(result);
-        window.location.href = '/documents';
+        window.location.href = '/document-validator/documents';
       },
       onFailure(err) {
         setError(err.message);
@@ -101,12 +101,26 @@ const useAuth = () => {
     let isAuthenticated = false;
     if (user) {
       user.getSession((err, session) => {
-        if (!err && session.isValid()) {
+        if (!err && session && session.isValid()) {
           isAuthenticated = true;
         }
       });
     }
     return isAuthenticated;
+  };
+
+  const isUserAdmin = () => {
+    const user = getAuthenticatedUser();
+    let userAcessIsAdmin = false;
+    if (user) {
+      user.getSession((err, session) => {
+        if (!err && session && session.isValid()) {
+          const group = session.accessToken?.payload['cognito:groups'][0];
+          userAcessIsAdmin = group === 'admin';
+        }
+      });
+    }
+    return userAcessIsAdmin;
   };
 
   return {
@@ -120,6 +134,7 @@ const useAuth = () => {
     getAuthenticatedUser,
     logout,
     isAuthenticated,
+    isUserAdmin,
   };
 };
 

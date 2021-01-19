@@ -5,22 +5,35 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import {Home, Login, Register, ValidateDocument, Documents} from './screens';
+import Validations from './screens/Validations';
+import useAuth from './hooks/useAuth';
+import { Login, Register, ValidateDocument, Documents } from './screens';
+import AdminArea from './screens/AdminArea';
 
 const Routes = () => {
+  const { isAuthenticated, isUserAdmin } = useAuth();
   return (
-    <Router basename='document-validator'>
+    <Router basename="document-validator">
       <Switch>
-        <Route path='/login' component={Login} />
-        <Route path='/register' exact={true} component={Register} />
-        <Route path='/home' exact={true} component={Home} />
-        <Route path='/documents' exact={true} component={Documents} />
+        {!isAuthenticated() && (
+          <Route path="/login" exact={true} component={Login} />
+        )}
+        {!isAuthenticated() && (
+          <Route path="/register" exact={true} component={Register} />
+        )}
+        {isAuthenticated() && (
+          <Route path="/documents" exact={true} component={Documents} />
+        )}
+        {isAuthenticated() && (
+          <Route path="/document/:id" exact={true} component={Validations} />
+        )}
         <Route
-          path='/validate-document'
+          path="/validate-document"
           exact={true}
           component={ValidateDocument}
         />
-        <Redirect from='/' to='/login' />
+        {isUserAdmin() && <Route path="/admin-area" component={AdminArea} />}
+        <Redirect from="/" to={isAuthenticated() ? '/documents' : '/login'} />
       </Switch>
     </Router>
   );

@@ -1,47 +1,87 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import useAuth from '../../hooks/useAuth';
-import { LogoutButton } from './style';
 
 const Header = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, isUserAdmin } = useAuth();
 
   return (
-    <nav className="navbar navbar-default">
-      <div className="container-fluid">
-        <div className="navbar-header">
-          <a className="navbar-brand" href="/">
-            Validador de documentos
-          </a>
-        </div>
-        <div className="navbar-default">
-          <ul className="nav navbar-nav">
-            {isAuthenticated() && (
-              <li>
-                <a href="/documents">Documentos</a>
-              </li>
-            )}
-            {isAuthenticated() && (
-              <li>
-                <a href="/" onClick={logout} style={{ cursor: 'pointer' }}>
-                  Logout
-                </a>
-              </li>
-            )}
-            {!isAuthenticated() && (
-              <li>
-                <a href="/">Logar</a>
-              </li>
-            )}
-            {!isAuthenticated() && (
-              <li>
-                <a href="/register">Cadastre-se</a>
-              </li>
-            )}
-            <li>
-              <a href="/validate-document">Validar Documento</a>
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <a
+        className="navbar-brand"
+        href={`${
+          isAuthenticated()
+            ? '/document-validator/documents'
+            : '/document-validator/'
+        }`}
+      >
+        Validador de documentos
+      </a>
+      <button
+        className="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span className="navbar-toggler-icon"></span>
+      </button>
+      <div
+        className="collapse navbar-collapse"
+        id="navbarNav"
+        itemID="navbarNav"
+      >
+        <ul className="navbar-nav">
+          {isAuthenticated() && (
+            <li className="nav-item">
+              <a className="nav-link" href="/document-validator/documents">
+                Documentos
+              </a>
             </li>
-          </ul>
-        </div>
+          )}
+          <li className="nav-item">
+            <a
+              className="nav-link"
+              href="/document-validator/validate-document"
+            >
+              Validar Documento
+            </a>
+          </li>
+          {isAuthenticated() && isUserAdmin() && (
+            <li className="nav-item">
+              <a className="nav-link" href="/document-validator/admin-area">
+                Area do Administrador
+              </a>
+            </li>
+          )}
+          {isAuthenticated() && (
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                href="/document-validator/"
+                onClick={logout}
+                style={{ cursor: 'pointer' }}
+              >
+                Logout
+              </a>
+            </li>
+          )}
+          {!isAuthenticated() && (
+            <li className="nav-item">
+              <a className="nav-link" href="/document-validator/">
+                Logar
+              </a>
+            </li>
+          )}
+          {!isAuthenticated() && (
+            <li className="nav-item">
+              <a className="nav-link" href="/document-validator/register">
+                Cadastre-se
+              </a>
+            </li>
+          )}
+        </ul>
       </div>
     </nav>
   );
