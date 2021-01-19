@@ -13,7 +13,7 @@ const AddModal = () => {
   };
 
   return (
-    <div id="addEmployeeModal" className="modal fade">
+    <div id="addUserModal" className="modal fade">
       <div className="modal-dialog">
         <div className="modal-content">
           <form onSubmit={addUser}>

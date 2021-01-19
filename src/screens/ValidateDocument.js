@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 const ValidateDocument = () => {
   const [fileId, setFileId] = useState('');
+  const [motivation, setMotivation] = useState('');
   const [file, setFile] = useState(undefined);
   const validateFile = e => {
     e.preventDefault();
@@ -28,6 +29,19 @@ const ValidateDocument = () => {
               value={fileId}
               className="form-control"
               onChange={e => setFileId(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="fileId" className="control-label">
+              Motivação da validação:
+            </label>
+            <input
+              type="text"
+              id="fileId"
+              name="fileId"
+              value={motivation}
+              className="form-control"
+              onChange={e => setMotivation(e.target.value)}
             />
           </div>
           <div className="form-group">

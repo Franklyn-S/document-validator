@@ -9,12 +9,48 @@ import DeleteModal from '../components/Modals/DeleteModal';
 const AdminArea = () => {
   const [selectedUser, setSelectedUser] = useState({});
   const users = [
-    { id: 1, name: 'Test 1', email: 'test@test.com', username: 'test213', password: "123" },
-    { id: 2, name: 'Test 2', email: 'test@test.com', username: 'test213', password: "123" },
-    { id: 3, name: 'Test 3', email: 'test@test.com', username: 'test213', password: "123" },
-    { id: 4, name: 'Test 4', email: 'test@test.com', username: 'test213', password: "123" },
-    { id: 5, name: 'Test 5', email: 'test@test.com', username: 'test213', password: "123" },
-    { id: 6, name: 'Test 6', email: 'test@test.com', username: 'test213', password: "123" },
+    {
+      id: 1,
+      name: 'Test 1',
+      email: 'test@test.com',
+      username: 'test213',
+      password: '123',
+    },
+    {
+      id: 2,
+      name: 'Test 2',
+      email: 'test@test.com',
+      username: 'test213',
+      password: '123',
+    },
+    {
+      id: 3,
+      name: 'Test 3',
+      email: 'test@test.com',
+      username: 'test213',
+      password: '123',
+    },
+    {
+      id: 4,
+      name: 'Test 4',
+      email: 'test@test.com',
+      username: 'test213',
+      password: '123',
+    },
+    {
+      id: 5,
+      name: 'Test 5',
+      email: 'test@test.com',
+      username: 'test213',
+      password: '123',
+    },
+    {
+      id: 6,
+      name: 'Test 6',
+      email: 'test@test.com',
+      username: 'test213',
+      password: '123',
+    },
   ];
   return (
     <>
@@ -30,7 +66,7 @@ const AdminArea = () => {
                 </div>
                 <div className="col-sm-6">
                   <a
-                    href="#addEmployeeModal"
+                    href="#addUserModal"
                     className="btn btn-success"
                     data-toggle="modal"
                   >
@@ -97,7 +133,7 @@ const AdminArea = () => {
           </div>
         </div>
       </div>
-      <AddModal id="addEmployeeModal" />
+      <AddModal id="addUserModal" />
       <EditModal id="editEmployeeModal" user={selectedUser} />
       <DeleteModal id="deleteEmployeeModal" userId={selectedUser.id} />
     </>
