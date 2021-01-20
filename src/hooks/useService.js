@@ -125,7 +125,11 @@ const useService = () => {
       })
       .then(result => {
         console.log(result.data);
-        setError(null);
+        if (result?.data?.data?.statusCode !== '200') {
+          setError(true);
+        } else {
+          setError(null);
+        }
         setMessage(result?.data?.data?.message);
         setShouldUpdate(true);
       })
@@ -135,12 +139,16 @@ const useService = () => {
   const deleteFile = (id, setError, setMessage, setShouldUpdate) => {
     axios
       .delete(fileService, {
-        data: { fileId: id, httpMethod: 'DELETE' },
+        data: { FileId: id, httpMethod: 'DELETE' },
       })
       .then(result => {
         console.log(result);
         setMessage(result?.data?.data?.message);
-        setError(null);
+        if (result?.data?.data?.statusCode !== '200') {
+          setError(true);
+        } else {
+          setError(null);
+        }
         setShouldUpdate(true);
       })
       .catch(err => setError(err));
@@ -158,7 +166,6 @@ const useService = () => {
             name: file.Path?.split('/')[1],
           }))
         );
-        setError(null);
       })
       .catch(err => {
         setError(err);

@@ -1,4 +1,7 @@
-export const POOL_DATA = {};
+export const POOL_DATA = {
+  UserPoolId: 'us-east-1_wCF3kDafp',
+  ClientId: '662sbft1je88iqr3su7ndk60a7',
+};
 
 export const validationService = `https://khce4i3yp3.execute-api.us-east-1.amazonaws.com/dev/validation/`;
 

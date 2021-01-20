@@ -8,19 +8,14 @@ const DeleteFileModal = ({
   setError,
   setMessage,
   setShowAlert,
-  setShouldUpdate
+  setShouldUpdate,
 }) => {
   const { deleteFile } = useService();
   const handleDelete = async e => {
     e.preventDefault();
     await deleteFile(fileId, setError, setMessage, setShouldUpdate);
     setShowAlert(true);
-    console.log('test');
-    if (!error) {
-      $('#deleteModalCloseButton').click();
-    } else {
-      console.log(error);
-    }
+    $('#deleteModalCloseButton').click();
     console.log(fileId + ' deletado');
   };
   return (

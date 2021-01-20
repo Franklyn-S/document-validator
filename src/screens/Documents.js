@@ -13,7 +13,8 @@ import { bucketS3 } from '../services';
 
 const Documents = () => {
   const [selectedFile, setSelectedFile] = useState({});
-  const [documents, setDocuments] = useState();
+  const [documents, setDocuments] = useState(null);
+  const [userId, setUserId] = useState();
   const [error, setError] = useState(null);
   const [message, setMessage] = useState('');
   const [showAlert, setShowAlert] = useState('');
@@ -22,9 +23,9 @@ const Documents = () => {
   const { getAuthenticatedUser } = useAuth();
 
   useEffect(() => {
-    const userId = getAuthenticatedUser().pool.clientId;
-    console.log(getAuthenticatedUser().pool.clientId);
     if ((!error && !documents) || shouldUpdate) {
+      const userId = getAuthenticatedUser().pool.clientId;
+      setUserId(userId);
       getFilesByUser(userId, setError, setDocuments, setShowAlert);
       setShouldUpdate(false);
     }
@@ -41,9 +42,10 @@ const Documents = () => {
   return (
     <>
       <Alert
-        type={error ? 'error' : 'success'}
+        type={error ? 'danger' : 'success'}
         message={message}
         show={showAlert}
+        setShow={setShowAlert}
       />
       <div className="col-sm-6">
         <a href="#addFileModal" className="btn btn-success" data-toggle="modal">
@@ -61,10 +63,11 @@ const Documents = () => {
               url={`/document-validator/document/${document.id}`}
               buttonColor="btn-primary"
             >
-              <a
+              <ButtonLink
                 download={document.name}
                 title={document.name}
-                href={bucketS3 + document.path}
+                onClick={() => window.open(bucketS3 + document.path)}
+                rel="noreferrer noopener"
                 className="delete"
                 data-toggle="modal"
               >
@@ -75,7 +78,7 @@ const Documents = () => {
                   data-toggle="tooltip"
                   title="Baixar"
                 />
-              </a>
+              </ButtonLink>
               <a
                 href="#deleteFileModal"
                 className="delete"
@@ -99,10 +102,11 @@ const Documents = () => {
           setMessage={setMessage}
           setShowAlert={setShowAlert}
           setShouldUpdate={setShouldUpdate}
+          userId={userId}
         />
         <DeleteFileModal
           id="addFileModal"
-          fileId={selectedFile.FileId}
+          fileId={selectedFile.id}
           error={error}
           setError={setError}
           setMessage={setMessage}

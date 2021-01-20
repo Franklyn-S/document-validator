@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import useService from '../../hooks/useService';
+import $ from 'jquery';
 
 const AddFileModal = ({
   error,
@@ -6,10 +8,12 @@ const AddFileModal = ({
   setMessage,
   setShowAlert,
   setShouldUpdate,
+  userId,
 }) => {
   const [file, setFile] = useState('');
   const [base64, setBase64] = useState('');
   const [fileName, setFileName] = useState('');
+  const { postFile } = useService();
 
   const generateBase64 = file => {
     let reader = new FileReader();
@@ -17,7 +21,6 @@ const AddFileModal = ({
 
     reader.onload = function () {
       setBase64(btoa(reader.result));
-      console.log();
     };
     reader.onerror = function () {
       setError('Ocorreu um problema ao subir o arquivo');
@@ -28,6 +31,14 @@ const AddFileModal = ({
     e.preventDefault();
     generateBase64(file);
     setFileName(file.name);
+    postFile(
+      { UserId: userId, Filename: fileName, File: base64 },
+      setError,
+      setMessage,
+      setShouldUpdate
+    );
+    $('#addModalCloseButton').click();
+    setShowAlert(true);
   };
 
   return (
@@ -38,6 +49,7 @@ const AddFileModal = ({
             <div className="modal-header">
               <h4 className="modal-title">Adicionar Arquivo</h4>
               <button
+                id="addModalCloseButton"
                 type="button"
                 className="close"
                 data-dismiss="modal"

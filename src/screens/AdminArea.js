@@ -26,9 +26,10 @@ const AdminArea = () => {
   return (
     <>
       <Alert
-        type={error ? 'error' : 'success'}
+        type={error ? 'danger' : 'success'}
         message={message}
         show={showAlert}
+        setShow={setShowAlert}
       />
       <div className="container-xl">
         <div className="table-responsive">

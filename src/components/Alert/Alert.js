@@ -1,15 +1,17 @@
 import React from 'react';
 
-const Alert = ({ type, message, show }) => {
+const Alert = ({ type, message, show, setShow }) => {
   return (
     <div
-      className={` container alert alert-${type} alert-dismissible fade ${show && 'show'}`}
+      className={` container alert alert-${type} alert-dismissible fade ${
+        show && 'show'
+      }`}
       role="alert"
     >
       <span
+        onClick={() => setShow(false)}
         type="button"
         className="close"
-        data-dismiss="alert"
         aria-label="Close"
       >
         <span aria-hidden="true">&times;</span>
