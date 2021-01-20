@@ -1,6 +1,6 @@
 import axios from 'axios';
 import useAuth from './useAuth';
-import { validationService, userService } from '../services';
+import { validationService, userService, fileService } from '../services';
 
 const useService = () => {
   const { getAuthenticatedUser } = useAuth();
@@ -110,12 +110,73 @@ const useService = () => {
       });
   };
 
+  const postFile = (
+    { UserId, Filename, File },
+    setError,
+    setMessage,
+    setShouldUpdate
+  ) => {
+    axios
+      .post(fileService, {
+        httpMethod: 'POST',
+        UserId,
+        Filename,
+        File,
+      })
+      .then(result => {
+        console.log(result.data);
+        setError(null);
+        setMessage(result?.data?.data?.message);
+        setShouldUpdate(true);
+      })
+      .catch(err => setError(err));
+  };
+
+  const deleteFile = (id, setError, setMessage, setShouldUpdate) => {
+    axios
+      .delete(fileService, {
+        data: { fileId: id, httpMethod: 'DELETE' },
+      })
+      .then(result => {
+        console.log(result);
+        setMessage(result?.data?.data?.message);
+        setError(null);
+        setShouldUpdate(true);
+      })
+      .catch(err => setError(err));
+  };
+
+  const getFilesByUser = (userId, setError, setFiles, setShowAlert) => {
+    axios
+      .get(fileService + userId)
+      .then(result => {
+        console.log(result);
+        setFiles(
+          result?.data?.map(file => ({
+            fileId: file.FileId,
+            path: file.Path,
+          }))
+        );
+        setError(null);
+      })
+      .catch(err => {
+        setError(err);
+        setShowAlert(true);
+        console.log(err);
+      });
+  };
+
   return {
     getValidationsByDocumentId,
+
     postUser,
     getUsers,
     deleteUser,
     putUser,
+
+    postFile,
+    getFilesByUser,
+    deleteFile,
   };
 };
 

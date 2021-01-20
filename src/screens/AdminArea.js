@@ -2,29 +2,27 @@ import React, { useEffect, useState } from 'react';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
-import AddModal from '../components/Modals/AddUserModal';
-import EditModal from '../components/Modals/EditUserModal';
-import DeleteModal from '../components/Modals/DeleteUserModal';
+import AddUserModal from '../components/Modals/AddUserModal';
+import EditUserModal from '../components/Modals/EditUserModal';
+import DeleteUserModal from '../components/Modals/DeleteUserModal';
 import Alert from '../components/Alert';
 import useService from '../hooks/useService';
 
 const AdminArea = () => {
   const [selectedUser, setSelectedUser] = useState({});
+  const [users, setUsers] = useState(null);
   const [error, setError] = useState(null);
   const [message, setMessage] = useState('');
   const [showAlert, setShowAlert] = useState('');
-  const [users, setUsers] = useState(null);
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const { getUsers } = useService();
 
   useEffect(() => {
     if ((!error && !users) || shouldUpdate) {
-      console.log('here');
       getUsers(setError, setUsers, setShowAlert);
-      setShouldUpdate(false)
+      setShouldUpdate(false);
     }
   }, [getUsers, setUsers, error, users, message, shouldUpdate]);
-  console.log(shouldUpdate);
   return (
     <>
       <Alert
@@ -112,7 +110,7 @@ const AdminArea = () => {
           </div>
         </div>
       </div>
-      <AddModal
+      <AddUserModal
         id="addUserModal"
         error={error}
         setError={setError}
@@ -120,7 +118,7 @@ const AdminArea = () => {
         setShowAlert={setShowAlert}
         setShouldUpdate={setShouldUpdate}
       />
-      <EditModal
+      <EditUserModal
         id="editUserModal"
         user={selectedUser}
         error={error}
@@ -129,7 +127,7 @@ const AdminArea = () => {
         setShowAlert={setShowAlert}
         setShouldUpdate={setShouldUpdate}
       />
-      <DeleteModal
+      <DeleteUserModal
         id="deleteUserModal"
         userId={selectedUser.id}
         error={error}

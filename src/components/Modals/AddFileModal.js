@@ -2,10 +2,16 @@ import React, { useState } from 'react';
 
 const AddFileModal = () => {
   const [file, setFile] = useState('');
+  const [fileName, setFileName] = useState('');
 
   const addFile = e => {
     e.preventDefault();
-    console.log('Arquivo Adicionado');
+    console.log(file);
+    const reader = new FileReader();
+    if (file) {
+      console.log(reader.readAsDataURL(file));
+    }
+    setFileName(file.name);
   };
 
   return (
