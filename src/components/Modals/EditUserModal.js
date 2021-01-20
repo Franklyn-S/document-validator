@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useService from '../../hooks/useService';
 import $ from 'jquery';
 
-const EditUserModal = ({ user, error, setError, setMessage, setShowAlert }) => {
+const EditUserModal = ({ user, error, setError, setMessage, setShowAlert, setShouldUpdate }) => {
   const [fullName, setFullName] = useState(user.name || '');
   const [userName, setUsername] = useState(user.username || '');
   const [email, setEmail] = useState(user.email || '');
@@ -22,13 +22,14 @@ const EditUserModal = ({ user, error, setError, setMessage, setShowAlert }) => {
     await putUser(
       { id: user.id, name: fullName, username: userName, password, email },
       setError,
-      setMessage
+      setMessage,
+      setShouldUpdate
     );
     setShowAlert(true);
     if (error) {
       console.log(error);
     } else {
-      $('.close').click();
+      $('#editModalCloseButton').click();
     }
     console.log('Usuário Editado');
   };
@@ -40,6 +41,7 @@ const EditUserModal = ({ user, error, setError, setMessage, setShowAlert }) => {
             <div className="modal-header">
               <h4 className="modal-title">Editar Usuário</h4>
               <button
+                id="editModalCloseButton"
                 type="button"
                 className="close"
                 data-dismiss="modal"

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import useService from '../../hooks/useService';
 import $ from 'jquery';
 
-const AddUserModal = ({ error, setError, setMessage, setShowAlert }) => {
+const AddUserModal = ({ error, setError, setMessage, setShowAlert, setShouldUpdate }) => {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -13,10 +13,9 @@ const AddUserModal = ({ error, setError, setMessage, setShowAlert }) => {
 
   const addUser = async e => {
     e.preventDefault();
-    await postUser({ name, username, email, password }, setError, setMessage);
+    await postUser({ name, username, email, password }, setError, setMessage, setShouldUpdate);
     if (!error) {
-      $('.close').click();
-      console.log('Usuário Adicionado');
+      $('#addModalCloseButton').click();
     } else {
       setError(error);
     }
@@ -31,6 +30,7 @@ const AddUserModal = ({ error, setError, setMessage, setShowAlert }) => {
             <div className="modal-header">
               <h4 className="modal-title">Adicionar Usuário</h4>
               <button
+                id="addModalCloseButton"
                 type="button"
                 className="close"
                 data-dismiss="modal"

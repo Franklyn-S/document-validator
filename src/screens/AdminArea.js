@@ -14,14 +14,17 @@ const AdminArea = () => {
   const [message, setMessage] = useState('');
   const [showAlert, setShowAlert] = useState('');
   const [users, setUsers] = useState(null);
+  const [shouldUpdate, setShouldUpdate] = useState(false);
   const { getUsers } = useService();
 
   useEffect(() => {
-    if (!error && !users) {
+    if ((!error && !users) || shouldUpdate) {
       console.log('here');
       getUsers(setError, setUsers, setShowAlert);
+      setShouldUpdate(false)
     }
-  }, [getUsers, setUsers, error, users]);
+  }, [getUsers, setUsers, error, users, message, shouldUpdate]);
+  console.log(shouldUpdate);
   return (
     <>
       <Alert
@@ -115,6 +118,7 @@ const AdminArea = () => {
         setError={setError}
         setMessage={setMessage}
         setShowAlert={setShowAlert}
+        setShouldUpdate={setShouldUpdate}
       />
       <EditModal
         id="editUserModal"
@@ -123,6 +127,7 @@ const AdminArea = () => {
         setError={setError}
         setMessage={setMessage}
         setShowAlert={setShowAlert}
+        setShouldUpdate={setShouldUpdate}
       />
       <DeleteModal
         id="deleteUserModal"
@@ -131,6 +136,7 @@ const AdminArea = () => {
         setError={setError}
         setMessage={setMessage}
         setShowAlert={setShowAlert}
+        setShouldUpdate={setShouldUpdate}
       />
     </>
   );

@@ -8,11 +8,13 @@ const Card = ({
   url,
   buttonDisabled,
   buttonColor,
+  children
 }) => {
   return (
     <CardContainer className="card">
       <div className="card-body">
         <h5 className="card-title">{title}</h5>
+        {children}
         <p className="card-text">{description}</p>
         {buttonName &&
           (buttonDisabled ? (

@@ -8,15 +8,16 @@ const DeleteUserModal = ({
   setError,
   setMessage,
   setShowAlert,
+  setShouldUpdate
 }) => {
   const { deleteUser } = useService();
   const handleDelete = async e => {
     e.preventDefault();
-    await deleteUser(userId, setError, setMessage);
+    await deleteUser(userId, setError, setMessage, setShouldUpdate);
     setShowAlert(true);
     console.log('test');
     if (!error) {
-      $('.close').click();
+      $('#deleteModalCloseButton').click();
     } else {
       console.log(error);
     }
@@ -30,6 +31,7 @@ const DeleteUserModal = ({
             <div className="modal-header">
               <h4 className="modal-title">Deletar Usuário</h4>
               <button
+                id="deleteModalCloseButton"
                 type="button"
                 className="close"
                 data-dismiss="modal"

@@ -3,7 +3,7 @@ import React from 'react';
 const Alert = ({ type, message, show }) => {
   return (
     <div
-      className={`alert alert-${type} alert-dismissible fade ${show && 'show'}`}
+      className={` container alert alert-${type} alert-dismissible fade ${show && 'show'}`}
       role="alert"
     >
       <span

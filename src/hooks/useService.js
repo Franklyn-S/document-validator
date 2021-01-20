@@ -28,7 +28,8 @@ const useService = () => {
   const postUser = (
     { name, username, password, email },
     setError,
-    setMessage
+    setMessage,
+    setShouldUpdate
   ) => {
     axios
       .post(userService, {
@@ -42,6 +43,7 @@ const useService = () => {
         console.log(result.data);
         setError(null);
         setMessage(result?.data?.data?.message);
+        setShouldUpdate(true);
       })
       .catch(err => setError(err));
   };
@@ -68,7 +70,7 @@ const useService = () => {
         console.log(err);
       });
   };
-  const deleteUser = (id, setError, setMessage) => {
+  const deleteUser = (id, setError, setMessage, setShouldUpdate) => {
     axios
       .delete(userService, {
         data: { id, httpMethod: 'DELETE' },
@@ -77,6 +79,7 @@ const useService = () => {
         console.log(result);
         setMessage(result?.data?.data?.message);
         setError(null);
+        setShouldUpdate(true);
       })
       .catch(err => setError(err));
   };
@@ -84,7 +87,8 @@ const useService = () => {
   const putUser = (
     { id, name, username, password, email },
     setError,
-    setMessage
+    setMessage,
+    setShouldUpdate
   ) => {
     axios
       .put(userService, {
@@ -97,6 +101,8 @@ const useService = () => {
       })
       .then(result => {
         console.log(result);
+        setShouldUpdate(true);
+        setError(null);
         setMessage(result.data?.data?.message);
       })
       .catch(err => {
