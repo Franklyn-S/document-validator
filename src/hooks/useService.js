@@ -153,8 +153,9 @@ const useService = () => {
         console.log(result);
         setFiles(
           result?.data?.map(file => ({
-            fileId: file.FileId,
+            id: file.FileId,
             path: file.Path,
+            name: file.Path?.split('/')[1],
           }))
         );
         setError(null);

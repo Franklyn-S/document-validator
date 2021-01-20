@@ -5,7 +5,7 @@ import Card from '../components/Card';
 import useService from '../hooks/useService';
 
 const DocumentData = () => {
-  const [validations, setValidations] = useState();
+  const [validations, setValidations] = useState([]);
   const [error, setError] = useState(null);
   const { getAuthenticatedUser } = useAuth();
   const { getValidationsByDocumentId } = useService();

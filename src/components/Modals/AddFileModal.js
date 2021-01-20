@@ -1,16 +1,32 @@
 import React, { useState } from 'react';
 
-const AddFileModal = () => {
+const AddFileModal = ({
+  error,
+  setError,
+  setMessage,
+  setShowAlert,
+  setShouldUpdate,
+}) => {
   const [file, setFile] = useState('');
+  const [base64, setBase64] = useState('');
   const [fileName, setFileName] = useState('');
+
+  const generateBase64 = file => {
+    let reader = new FileReader();
+    reader.readAsBinaryString(file);
+
+    reader.onload = function () {
+      setBase64(btoa(reader.result));
+      console.log();
+    };
+    reader.onerror = function () {
+      setError('Ocorreu um problema ao subir o arquivo');
+    };
+  };
 
   const addFile = e => {
     e.preventDefault();
-    console.log(file);
-    const reader = new FileReader();
-    if (file) {
-      console.log(reader.readAsDataURL(file));
-    }
+    generateBase64(file);
     setFileName(file.name);
   };
 

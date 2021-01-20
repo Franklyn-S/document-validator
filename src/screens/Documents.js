@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Card from '../components/Card';
+import styled from 'styled-components';
 import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
+import Card from '../components/Card';
 import AddFileModal from '../components/Modals/AddFileModal';
 import useService from '../hooks/useService';
 import useAuth from '../hooks/useAuth';
 import Alert from '../components/Alert';
 import DeleteFileModal from '../components/Modals/DeleteFileModal';
+import { bucketS3 } from '../services';
 
 const Documents = () => {
   const [selectedFile, setSelectedFile] = useState({});
@@ -53,13 +56,28 @@ const Documents = () => {
           documents.map(document => (
             <Card
               key={document.id}
-              title={document.id}
+              title={document.name}
               buttonName="Verificar Validações"
               url={`/document-validator/document/${document.id}`}
               buttonColor="btn-primary"
             >
               <a
-                href="#deleteUserModal"
+                download={document.name}
+                title={document.name}
+                href={bucketS3 + document.path}
+                className="delete"
+                data-toggle="modal"
+              >
+                <CloudDownloadIcon
+                  width={20}
+                  height={20}
+                  className="material-icons"
+                  data-toggle="tooltip"
+                  title="Baixar"
+                />
+              </a>
+              <a
+                href="#deleteFileModal"
                 className="delete"
                 data-toggle="modal"
                 onClick={() => setSelectedFile(document)}
@@ -97,3 +115,15 @@ const Documents = () => {
 };
 
 export default Documents;
+
+const ButtonLink = styled.button`
+  background: none !important;
+  border: none;
+  padding: 0 !important;
+  /*optional*/
+  font-family: arial, sans-serif;
+  /*input has OS specific font-family*/
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+`;
