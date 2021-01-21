@@ -71,7 +71,6 @@ const Documents = () => {
       <div className="d-flex justify-content-start flex-wrap align-content-start">
         {documents &&
           documents.map(document => {
-            console.log(document);
             return (
               <Card
                 key={document.id}

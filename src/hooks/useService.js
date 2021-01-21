@@ -28,7 +28,10 @@ const useService = () => {
         }
         setMessage(result?.data?.data?.message);
       })
-      .catch(err => setError(err))
+      .catch(err => {
+        setMessage("Erro ao fazer validação");
+        setError(err);
+      })
       .finally(() => setLoading(false));
   };
 
