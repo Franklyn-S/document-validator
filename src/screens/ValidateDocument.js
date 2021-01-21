@@ -29,13 +29,13 @@ const ValidateDocument = () => {
 
   const validateFile = async e => {
     e.preventDefault();
-    await generateBase64(file);
     await createValidation(
       { fileId, base64, motivation },
       setError,
       setMessage,
       setLoading
     );
+    console.log(file);
     setShowAlert(true);
   };
   return (
@@ -95,7 +95,11 @@ const ValidateDocument = () => {
               type="file"
               id="file"
               name="file"
-              onChange={e => setFile(e.target.files[0])}
+              onChange={e => {
+                const file = e.target.files[0];
+                setFile(file);
+                generateBase64(file);
+              }}
             />
           </div>
           <button className="btn btn-primary">Validar</button>

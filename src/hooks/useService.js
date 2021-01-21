@@ -29,7 +29,9 @@ const useService = () => {
         setMessage(result?.data?.data?.message);
       })
       .catch(err => {
-        setMessage("Erro ao fazer validação");
+        setMessage(
+          "Erro ao fazer validação, verifique se o id foi digitado corretamente."
+        );
         setError(err);
       })
       .finally(() => setLoading(false));
@@ -41,6 +43,7 @@ const useService = () => {
     setValidations,
     setLoading
   ) => {
+    console.log('test');
     getAuthenticatedUser().getSession((err, session) => {
       if (err) {
         setError(err);
@@ -54,6 +57,7 @@ const useService = () => {
           },
         })
         .then(result => {
+          console.log(result);
           setValidations(result.data);
           setError(null);
         })
