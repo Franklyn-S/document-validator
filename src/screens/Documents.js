@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
-import Card from '../components/Card';
-import AddFileModal from '../components/Modals/AddFileModal';
-import useService from '../hooks/useService';
-import useAuth from '../hooks/useAuth';
-import Alert from '../components/Alert';
-import DeleteFileModal from '../components/Modals/DeleteFileModal';
-import { bucketS3 } from '../services';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import AddIcon from "@material-ui/icons/Add";
+import DeleteIcon from "@material-ui/icons/Delete";
+import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
+import Card from "../components/Card";
+import AddFileModal from "../components/Modals/AddFileModal";
+import useService from "../hooks/useService";
+import useAuth from "../hooks/useAuth";
+import Alert from "../components/Alert";
+import DeleteFileModal from "../components/Modals/DeleteFileModal";
+import { bucketS3 } from "../services";
 
 const Documents = () => {
   const [selectedFile, setSelectedFile] = useState({});
   const [documents, setDocuments] = useState(null);
   const [userId, setUserId] = useState();
   const [error, setError] = useState(null);
-  const [message, setMessage] = useState('');
-  const [showAlert, setShowAlert] = useState('');
+  const [message, setMessage] = useState("");
+  const [showAlert, setShowAlert] = useState("");
   const [shouldUpdate, setShouldUpdate] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { getFilesByUser } = useService();
   const { getAuthenticatedUser } = useAuth();
 
@@ -26,7 +27,14 @@ const Documents = () => {
     if ((!error && !documents) || shouldUpdate) {
       const userId = getAuthenticatedUser().pool.clientId;
       setUserId(userId);
-      getFilesByUser(userId, setError, setDocuments, setShowAlert);
+      getFilesByUser(
+        userId,
+        setError,
+        setDocuments,
+        setMessage,
+        setShowAlert,
+        setLoading
+      );
       setShouldUpdate(false);
     }
   }, [
@@ -38,18 +46,25 @@ const Documents = () => {
     getAuthenticatedUser,
     documents,
   ]);
-
   return (
     <>
-      <Alert
-        type={error ? 'danger' : 'success'}
-        message={message}
-        show={showAlert}
-        setShow={setShowAlert}
-      />
+      {loading ? (
+        <div className="container">
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      ) : (
+        <Alert
+          type={error ? "danger" : "success"}
+          message={message}
+          show={showAlert}
+          setShow={setShowAlert}
+        />
+      )}
       <div className="col-sm-6">
         <a href="#addFileModal" className="btn btn-success" data-toggle="modal">
-          <AddIcon width={20} height={20} className="material-icons" />{' '}
+          <AddIcon width={20} height={20} className="material-icons" />{" "}
           <span>Adicionar Arquivo</span>
         </a>
       </div>
@@ -102,6 +117,7 @@ const Documents = () => {
           setMessage={setMessage}
           setShowAlert={setShowAlert}
           setShouldUpdate={setShouldUpdate}
+          setLoading={setLoading}
           userId={userId}
         />
         <DeleteFileModal
@@ -112,6 +128,7 @@ const Documents = () => {
           setMessage={setMessage}
           setShowAlert={setShowAlert}
           setShouldUpdate={setShouldUpdate}
+          setLoading={setLoading}
         />
       </div>
     </>

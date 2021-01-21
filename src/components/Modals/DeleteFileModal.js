@@ -1,6 +1,6 @@
-import React from 'react';
-import useService from '../../hooks/useService';
-import $ from 'jquery';
+import React from "react";
+import useService from "../../hooks/useService";
+import $ from "jquery";
 
 const DeleteFileModal = ({
   fileId,
@@ -9,14 +9,22 @@ const DeleteFileModal = ({
   setMessage,
   setShowAlert,
   setShouldUpdate,
+  setLoading,
 }) => {
   const { deleteFile } = useService();
-  const handleDelete = async e => {
+  const handleDelete = e => {
     e.preventDefault();
-    await deleteFile(fileId, setError, setMessage, setShouldUpdate);
+    console.log(fileId);
+    deleteFile(
+      fileId,
+      setError,
+      setMessage,
+      setShouldUpdate,
+      setShowAlert,
+      setLoading
+    );
     setShowAlert(true);
-    $('#deleteModalCloseButton').click();
-    console.log(fileId + ' deletado');
+    $("#deleteModalCloseButton").click();
   };
   return (
     <div id="deleteFileModal" className="modal fade">

@@ -1,20 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import useService from '../../hooks/useService';
-import $ from 'jquery';
+import React, { useEffect, useState } from "react";
+import useService from "../../hooks/useService";
+import $ from "jquery";
 
-const EditUserModal = ({ user, error, setError, setMessage, setShowAlert, setShouldUpdate }) => {
-  const [fullName, setFullName] = useState(user.name || '');
-  const [userName, setUsername] = useState(user.username || '');
-  const [email, setEmail] = useState(user.email || '');
-  const [password, setPassword] = useState(user.password || '');
+const EditUserModal = ({
+  user,
+  error,
+  setError,
+  setMessage,
+  setShowAlert,
+  setShouldUpdate,
+  setLoading,
+}) => {
+  const [fullName, setFullName] = useState(user.name || "");
+  const [userName, setUsername] = useState(user.username || "");
+  const [email, setEmail] = useState(user.email || "");
+  const [password, setPassword] = useState(user.password || "");
 
   const { putUser } = useService();
 
   useEffect(() => {
-    setFullName(user.name || '');
-    setUsername(user.username || '');
-    setEmail(user.email || '');
-    setPassword(user.password || '');
+    setFullName(user.name || "");
+    setUsername(user.username || "");
+    setEmail(user.email || "");
+    setPassword(user.password || "");
   }, [user]);
 
   const EditUser = async e => {
@@ -23,15 +31,16 @@ const EditUserModal = ({ user, error, setError, setMessage, setShowAlert, setSho
       { id: user.id, name: fullName, username: userName, password, email },
       setError,
       setMessage,
-      setShouldUpdate
+      setShouldUpdate,
+      setLoading
     );
     setShowAlert(true);
     if (error) {
       console.log(error);
     } else {
-      $('#editModalCloseButton').click();
+      $("#editModalCloseButton").click();
     }
-    console.log('Usuário Editado');
+    console.log("Usuário Editado");
   };
   return (
     <div id="editUserModal" className="modal fade">

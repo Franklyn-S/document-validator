@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
 const Alert = ({ type, message, show, setShow }) => {
   return (
     <div
-      className={` container alert alert-${type} alert-dismissible fade ${
-        show && 'show'
+      className={`container alert alert-${type} alert-dismissible fade ${
+        show && "show"
       }`}
       role="alert"
     >

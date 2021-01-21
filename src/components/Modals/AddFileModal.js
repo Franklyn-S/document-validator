@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import useService from '../../hooks/useService';
-import $ from 'jquery';
+import React, { useState } from "react";
+import useService from "../../hooks/useService";
+import $ from "jquery";
 
 const AddFileModal = ({
   error,
@@ -8,37 +8,36 @@ const AddFileModal = ({
   setMessage,
   setShowAlert,
   setShouldUpdate,
+  setLoading,
   userId,
 }) => {
-  const [file, setFile] = useState('');
-  const [base64, setBase64] = useState('');
-  const [fileName, setFileName] = useState('');
+  const [file, setFile] = useState("");
+  const [base64, setBase64] = useState("");
   const { postFile } = useService();
 
   const generateBase64 = file => {
     let reader = new FileReader();
     reader.readAsBinaryString(file);
-
     reader.onload = function () {
       setBase64(btoa(reader.result));
     };
     reader.onerror = function () {
-      setError('Ocorreu um problema ao subir o arquivo');
+      setError("Ocorreu um problema ao subir o arquivo");
     };
   };
 
   const addFile = async e => {
     e.preventDefault();
-    await generateBase64(file);
-    setFileName(file.name);
+    console.log(file.name);
     await postFile(
-      { UserId: userId, Filename: fileName, File: base64 },
+      { UserId: userId, Filename: file.name, File: base64 },
       setError,
       setMessage,
-      setShouldUpdate
+      setShouldUpdate,
+      setShowAlert,
+      setLoading
     );
-    $('#addModalCloseButton').click();
-    setShowAlert(true);
+    $("#addModalCloseButton").click();
   };
 
   return (
@@ -65,7 +64,11 @@ const AddFileModal = ({
                 type="file"
                 id="file"
                 name="file"
-                onChange={e => setFile(e.target.files[0])}
+                onChange={async e => {
+                  const file = e.target.files[0];
+                  setFile(file);
+                  await generateBase64(file);
+                }}
                 required
               />
             </div>

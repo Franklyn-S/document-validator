@@ -1,6 +1,6 @@
-import React from 'react';
-import useService from '../../hooks/useService';
-import $ from 'jquery';
+import React from "react";
+import useService from "../../hooks/useService";
+import $ from "jquery";
 
 const DeleteUserModal = ({
   userId,
@@ -8,20 +8,20 @@ const DeleteUserModal = ({
   setError,
   setMessage,
   setShowAlert,
-  setShouldUpdate
+  setShouldUpdate,
+  setLoading,
 }) => {
   const { deleteUser } = useService();
   const handleDelete = async e => {
     e.preventDefault();
-    await deleteUser(userId, setError, setMessage, setShouldUpdate);
+    await deleteUser(userId, setError, setMessage, setShouldUpdate, setLoading);
     setShowAlert(true);
-    console.log('test');
     if (!error) {
-      $('#deleteModalCloseButton').click();
+      $("#deleteModalCloseButton").click();
     } else {
       console.log(error);
     }
-    console.log(userId + ' deletado');
+    console.log(userId + " deletado");
   };
   return (
     <div id="deleteUserModal" className="modal fade">

@@ -1,36 +1,45 @@
-import React, { useEffect, useState } from 'react';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import AddIcon from '@material-ui/icons/Add';
-import AddUserModal from '../components/Modals/AddUserModal';
-import EditUserModal from '../components/Modals/EditUserModal';
-import DeleteUserModal from '../components/Modals/DeleteUserModal';
-import Alert from '../components/Alert';
-import useService from '../hooks/useService';
+import React, { useEffect, useState } from "react";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import AddIcon from "@material-ui/icons/Add";
+import AddUserModal from "../components/Modals/AddUserModal";
+import EditUserModal from "../components/Modals/EditUserModal";
+import DeleteUserModal from "../components/Modals/DeleteUserModal";
+import Alert from "../components/Alert";
+import useService from "../hooks/useService";
 
 const AdminArea = () => {
   const [selectedUser, setSelectedUser] = useState({});
   const [users, setUsers] = useState(null);
   const [error, setError] = useState(null);
-  const [message, setMessage] = useState('');
-  const [showAlert, setShowAlert] = useState('');
+  const [message, setMessage] = useState("");
+  const [showAlert, setShowAlert] = useState("");
   const [shouldUpdate, setShouldUpdate] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { getUsers } = useService();
 
   useEffect(() => {
     if ((!error && !users) || shouldUpdate) {
-      getUsers(setError, setUsers, setShowAlert);
+      getUsers(setError, setUsers, setShowAlert, setLoading);
       setShouldUpdate(false);
     }
   }, [getUsers, setUsers, error, users, message, shouldUpdate]);
   return (
     <>
-      <Alert
-        type={error ? 'danger' : 'success'}
-        message={message}
-        show={showAlert}
-        setShow={setShowAlert}
-      />
+      {loading ? (
+        <div className="container">
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      ) : (
+        <Alert
+          type={error ? "danger" : "success"}
+          message={message}
+          show={showAlert}
+          setShow={setShowAlert}
+        />
+      )}
       <div className="container-xl">
         <div className="table-responsive">
           <div className="table-wrapper">
@@ -51,7 +60,7 @@ const AdminArea = () => {
                       width={20}
                       height={20}
                       className="material-icons"
-                    />{' '}
+                    />{" "}
                     <span>Adicionar Usuário</span>
                   </a>
                 </div>
@@ -118,6 +127,7 @@ const AdminArea = () => {
         setMessage={setMessage}
         setShowAlert={setShowAlert}
         setShouldUpdate={setShouldUpdate}
+        setLoading={setLoading}
       />
       <EditUserModal
         id="editUserModal"
@@ -127,6 +137,7 @@ const AdminArea = () => {
         setMessage={setMessage}
         setShowAlert={setShowAlert}
         setShouldUpdate={setShouldUpdate}
+        setLoading={setLoading}
       />
       <DeleteUserModal
         id="deleteUserModal"
@@ -136,6 +147,7 @@ const AdminArea = () => {
         setMessage={setMessage}
         setShowAlert={setShowAlert}
         setShouldUpdate={setShouldUpdate}
+        setLoading={setLoading}
       />
     </>
   );

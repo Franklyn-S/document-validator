@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import Alert from '../components/Alert';
+import React, { useState } from "react";
+import styled from "styled-components";
+import Alert from "../components/Alert";
 import useService from "../hooks/useService";
 
 const ValidateDocument = () => {
-  const [fileId, setFileId] = useState('');
-  const [motivation, setMotivation] = useState('');
+  const [fileId, setFileId] = useState("");
+  const [motivation, setMotivation] = useState("");
   const [error, setError] = useState(null);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(undefined);
   const [base64, setBase64] = useState(undefined);
   const { createValidation } = useService();
@@ -21,26 +22,38 @@ const ValidateDocument = () => {
       setBase64(btoa(reader.result));
     };
     reader.onerror = function () {
-      setMessage('Ocorreu um problema ao subir o arquivo');
+      setMessage("Ocorreu um problema ao subir o arquivo");
       setError(true);
     };
   };
 
-  
   const validateFile = async e => {
     e.preventDefault();
     await generateBase64(file);
-    await createValidation({fileId, base64, motivation }, setError, setMessage);
-    setShowAlert(true)
+    await createValidation(
+      { fileId, base64, motivation },
+      setError,
+      setMessage,
+      setLoading
+    );
+    setShowAlert(true);
   };
   return (
     <div className="container">
-      <Alert
-        type={error ? 'danger' : 'success'}
-        message={message}
-        show={showAlert}
-        setShow={setShowAlert}
-      />
+      {loading ? (
+        <div className="container">
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      ) : (
+        <Alert
+          type={error ? "danger" : "success"}
+          message={message}
+          show={showAlert}
+          setShow={setShowAlert}
+        />
+      )}
       <div className="row center-block">
         <ValidationFormStyle
           className="text-center jumbotron"
