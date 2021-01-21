@@ -27,11 +27,11 @@ const AddFileModal = ({
     };
   };
 
-  const addFile = e => {
+  const addFile = async e => {
     e.preventDefault();
-    generateBase64(file);
+    await generateBase64(file);
     setFileName(file.name);
-    postFile(
+    await postFile(
       { UserId: userId, Filename: fileName, File: base64 },
       setError,
       setMessage,

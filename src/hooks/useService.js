@@ -5,6 +5,26 @@ import { validationService, userService, fileService } from '../services';
 const useService = () => {
   const { getAuthenticatedUser } = useAuth();
 
+  const createValidation = ({ fileId, base64, motivation}, setError, setMessage) => {
+    axios
+    .post(validationService, {
+      httpMethod: 'POST',
+      fileId,
+      base64,
+      motivation,
+    })
+    .then(result => {
+      console.log(result.data);
+      if (result?.data?.statusCode !== '200') {
+        setError(true);
+      } else {
+        setError(null);
+      }
+      setMessage(result?.data?.message);
+    })
+    .catch(err => setError(err));
+  }
+
   const getValidationsByDocumentId = (id, setError, setValidations) => {
     getAuthenticatedUser().getSession((err, session) => {
       if (err) {
@@ -175,6 +195,7 @@ const useService = () => {
   };
 
   return {
+    createValidation,
     getValidationsByDocumentId,
 
     postUser,

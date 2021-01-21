@@ -1,16 +1,46 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import Alert from '../components/Alert';
+import useService from "../hooks/useService";
 
 const ValidateDocument = () => {
   const [fileId, setFileId] = useState('');
   const [motivation, setMotivation] = useState('');
+  const [error, setError] = useState(null);
+  const [message, setMessage] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
   const [file, setFile] = useState(undefined);
-  const validateFile = e => {
+  const [base64, setBase64] = useState(undefined);
+  const { createValidation } = useService();
+
+  const generateBase64 = file => {
+    let reader = new FileReader();
+    reader.readAsBinaryString(file);
+
+    reader.onload = function () {
+      setBase64(btoa(reader.result));
+    };
+    reader.onerror = function () {
+      setMessage('Ocorreu um problema ao subir o arquivo');
+      setError(true);
+    };
+  };
+
+  
+  const validateFile = async e => {
     e.preventDefault();
-    console.log(file);
+    await generateBase64(file);
+    await createValidation({fileId, base64, motivation }, setError, setMessage);
+    setShowAlert(true)
   };
   return (
     <div className="container">
+      <Alert
+        type={error ? 'danger' : 'success'}
+        message={message}
+        show={showAlert}
+        setShow={setShowAlert}
+      />
       <div className="row center-block">
         <ValidationFormStyle
           className="text-center jumbotron"
