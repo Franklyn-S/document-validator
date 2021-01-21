@@ -115,8 +115,10 @@ const useAuth = () => {
     if (user) {
       user.getSession((err, session) => {
         if (!err && session && session.isValid()) {
-          const group = session.accessToken?.payload['cognito:groups'][0];
-          userAcessIsAdmin = group === 'admin';
+          if (session.accessToken?.payload['cognito:groups'].length > 0) {
+            const group = session.accessToken?.payload['cognito:groups'][0];
+            userAcessIsAdmin = group === 'admin';
+          }
         }
       });
     }
