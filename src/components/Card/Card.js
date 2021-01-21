@@ -1,24 +1,26 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const Card = ({
+  id,
   title,
   description,
   buttonName,
   url,
   buttonDisabled,
   buttonColor,
-  children
+  children,
 }) => {
   return (
     <CardContainer className="card">
       <div className="card-body">
+        {id && <h5 className="card-title">Id: {id}</h5>}
         <h5 className="card-title">{title}</h5>
         {children}
         <p className="card-text">{description}</p>
         {buttonName &&
           (buttonDisabled ? (
-            <p style={{ cursor: 'default' }} className={`btn ${buttonColor}`}>
+            <p style={{ cursor: "default" }} className={`btn ${buttonColor}`}>
               {buttonName}
             </p>
           ) : (

@@ -70,46 +70,50 @@ const Documents = () => {
       </div>
       <div className="d-flex justify-content-start flex-wrap align-content-start">
         {documents &&
-          documents.map(document => (
-            <Card
-              key={document.id}
-              title={document.name}
-              buttonName="Verificar Validações"
-              url={`/document-validator/document/${document.id}`}
-              buttonColor="btn-primary"
-            >
-              <ButtonLink
-                download={document.name}
+          documents.map(document => {
+            console.log(document);
+            return (
+              <Card
+                key={document.id}
+                id={document.id}
                 title={document.name}
-                onClick={() => window.open(bucketS3 + document.path)}
-                rel="noreferrer noopener"
-                className="delete"
-                data-toggle="modal"
+                buttonName="Verificar Validações"
+                url={`/document-validator/document/${document.id}`}
+                buttonColor="btn-primary"
               >
-                <CloudDownloadIcon
-                  width={20}
-                  height={20}
-                  className="material-icons"
-                  data-toggle="tooltip"
-                  title="Baixar"
-                />
-              </ButtonLink>
-              <a
-                href="#deleteFileModal"
-                className="delete"
-                data-toggle="modal"
-                onClick={() => setSelectedFile(document)}
-              >
-                <DeleteIcon
-                  width={20}
-                  height={20}
-                  className="material-icons"
-                  data-toggle="tooltip"
-                  title="Deletar"
-                />
-              </a>
-            </Card>
-          ))}
+                <ButtonLink
+                  download={document.name}
+                  title={document.name}
+                  onClick={() => window.open(bucketS3 + document.path)}
+                  rel="noreferrer noopener"
+                  className="delete"
+                  data-toggle="modal"
+                >
+                  <CloudDownloadIcon
+                    width={20}
+                    height={20}
+                    className="material-icons"
+                    data-toggle="tooltip"
+                    title="Baixar"
+                  />
+                </ButtonLink>
+                <a
+                  href="#deleteFileModal"
+                  className="delete"
+                  data-toggle="modal"
+                  onClick={() => setSelectedFile(document)}
+                >
+                  <DeleteIcon
+                    width={20}
+                    height={20}
+                    className="material-icons"
+                    data-toggle="tooltip"
+                    title="Deletar"
+                  />
+                </a>
+              </Card>
+            );
+          })}
         <AddFileModal
           id="addFileModal"
           error={error}
