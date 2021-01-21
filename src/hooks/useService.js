@@ -15,12 +15,12 @@ const useService = () => {
     })
     .then(result => {
       console.log(result.data);
-      if (result?.data?.statusCode !== '200') {
+      if (result?.data?.data?.statusCode !== '200') {
         setError(true);
       } else {
         setError(null);
       }
-      setMessage(result?.data?.message);
+      setMessage(result?.data?.data?.message);
     })
     .catch(err => setError(err));
   }
