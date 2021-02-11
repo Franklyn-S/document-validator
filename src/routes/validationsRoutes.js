@@ -4,7 +4,6 @@ const validationController = require("../controllers/validationController");
 
 router.post("/", validationController.insert);
 router.get("/:fileId", validationController.getValidationsByFileId);
-// router.put("/:id", userController.update);
-// router.delete("/:id", userController.deleteById);
+router.delete("/:fileId", validationController.deleteByFileId);
 
 module.exports = router;

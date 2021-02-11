@@ -111,14 +111,43 @@ const validationController = {
         res.status(500).send("Falha ao inserir validacao no datastore");
     }
   },
+  async deleteByFileId(req,res){
+    
+    try{
+        const fileId = req.params.fileId;
+        console.log(fileId);
+
+        const query = datastore.createQuery('document-validator').filter('fileId', '=', fileId);
+        const [validations] = await datastore.runQuery(query);
+
+        validations.forEach(validation => datastore.delete(validation[Object.getOwnPropertySymbols(validation)[0]]));
+
+        res.status(200).send("Validações removidas");
+
+    } catch (err) {
+        res.status(500).send("Falha ao pegar validacoes no datastore");
+    }
+
+  },
   async getValidationsByFileId(req, res){
-    const { fileId} = req.params.fileId;
+    try{
+        const fileId = req.params.fileId;
 
-    console.log(fileId);
+        console.log(fileId);
 
-    const query = datastore.createQuery('document-validator').filter('fileId', '=', fileId);
-    console.log(query);
-    res.status(200).json(query);
+        const query = datastore.createQuery('document-validator').filter('fileId', '=', fileId);
+        const [validations] = await datastore.runQuery(query);
+
+        console.log(validations.Key);
+
+        console.log('Validations:');
+
+        validations.forEach(validation => console.log(validation[Object.getOwnPropertySymbols(validation)[0]]));
+
+        res.status(200).json(validations);
+    } catch(err){
+        res.status(500).send("Falha ao pegar validacoes no datastore");
+    }
   }
 }
 
