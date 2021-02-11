@@ -44,12 +44,14 @@ const validationController = {
         var name = null;
         const document = await db.query("SELECT userId, name FROM document WHERE documentId = ?", fileId);
 
-        if (document != null) {
+        console.log(document);
+        console.log(Object.keys(document).length);
+        if (document && Object.keys(document).length > 0) {
             userId = document[0].userId;
             name = document[0].name;
         }
         else {
-            res.status(200).send("Arquivo nao esta no banco de dados");
+            res.status(200).send("Arquivo nao existe");
         }
         
     } catch (err) {
@@ -82,6 +84,7 @@ const validationController = {
             const task = {
                 key: taskKey,
                 data:{
+                    fileId: fileId,
                     date: new Date(),
                     result: 'True',
                     motivation: motivation,
@@ -94,6 +97,7 @@ const validationController = {
             const task = {
                 key: taskKey,
                 data:{
+                    fileId: fileId,
                     date: new Date(),
                     result: 'False',
                     motivation: motivation,
@@ -107,8 +111,14 @@ const validationController = {
         res.status(500).send("Falha ao inserir validacao no datastore");
     }
   },
-  async delete(req, res){
+  async getValidationsByFileId(req, res){
+    const { fileId} = req.params.fileId;
 
+    console.log(fileId);
+
+    const query = datastore.createQuery('document-validator').filter('fileId', '=', fileId);
+    console.log(query);
+    res.status(200).json(query);
   }
 }
 
