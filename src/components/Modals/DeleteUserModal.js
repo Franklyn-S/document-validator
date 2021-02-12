@@ -18,42 +18,42 @@ const DeleteUserModal = ({
     setShowAlert(true);
     if (!error) {
       $("#deleteModalCloseButton").click();
+      setMessage("Usuário deletado com sucesso!");
     } else {
       console.log(error);
     }
-    console.log(userId + " deletado");
   };
   return (
-    <div id="deleteUserModal" className="modal fade">
-      <div className="modal-dialog">
-        <div className="modal-content">
+    <div id='deleteUserModal' className='modal fade'>
+      <div className='modal-dialog'>
+        <div className='modal-content'>
           <form onSubmit={handleDelete}>
-            <div className="modal-header">
-              <h4 className="modal-title">Deletar Usuário</h4>
+            <div className='modal-header'>
+              <h4 className='modal-title'>Deletar Usuário</h4>
               <button
-                id="deleteModalCloseButton"
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-hidden="true"
+                id='deleteModalCloseButton'
+                type='button'
+                className='close'
+                data-dismiss='modal'
+                aria-hidden='true'
               >
                 &times;
               </button>
             </div>
-            <div className="modal-body">
+            <div className='modal-body'>
               <p>Você tem certeza que quer deletar esse usuário?</p>
-              <p className="text-warning">
+              <p className='text-warning'>
                 <small>Essa ação não pode ser desfeita.</small>
               </p>
             </div>
-            <div className="modal-footer">
+            <div className='modal-footer'>
               <input
-                type="button"
-                className="btn btn-default"
-                data-dismiss="modal"
-                value="Cancelar"
+                type='button'
+                className='btn btn-default'
+                data-dismiss='modal'
+                value='Cancelar'
               />
-              <input type="submit" className="btn btn-danger" value="Deletar" />
+              <input type='submit' className='btn btn-danger' value='Deletar' />
             </div>
           </form>
         </div>

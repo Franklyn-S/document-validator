@@ -27,9 +27,9 @@ const AdminArea = () => {
   return (
     <>
       {loading ? (
-        <div className="container">
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Loading...</span>
+        <div className='container'>
+          <div className='spinner-border' role='status'>
+            <span className='sr-only'>Loading...</span>
           </div>
         </div>
       ) : (
@@ -40,26 +40,26 @@ const AdminArea = () => {
           setShow={setShowAlert}
         />
       )}
-      <div className="container-xl">
-        <div className="table-responsive">
-          <div className="table-wrapper">
-            <div className="table-title">
-              <div className="row">
-                <div className="col-sm-6">
+      <div className='container-xl'>
+        <div className='table-responsive'>
+          <div className='table-wrapper'>
+            <div className='table-title'>
+              <div className='row'>
+                <div className='col-sm-6'>
                   <h2>
                     Gerenciar <b>Usuários</b>
                   </h2>
                 </div>
-                <div className="col-sm-6">
+                <div className='col-sm-6'>
                   <a
-                    href="#addUserModal"
-                    className="btn btn-success"
-                    data-toggle="modal"
+                    href='#addUserModal'
+                    className='btn btn-success'
+                    data-toggle='modal'
                   >
                     <AddIcon
                       width={20}
                       height={20}
-                      className="material-icons"
+                      className='material-icons'
                     />{" "}
                     <span>Adicionar Usuário</span>
                   </a>
@@ -67,7 +67,7 @@ const AdminArea = () => {
               </div>
             </div>
 
-            <table className="table table-hover">
+            <table className='table table-hover'>
               <thead>
                 <tr>
                   <th>Usuário</th>
@@ -79,37 +79,37 @@ const AdminArea = () => {
               <tbody>
                 {users &&
                   users.map(user => (
-                    <tr key={user.id}>
+                    <tr key={user.userId}>
                       <td>{user.username}</td>
-                      <td>{user.name}</td>
+                      <td>{user.fullName}</td>
                       <td>{user.email}</td>
                       <td>
                         <a
-                          href="#editUserModal"
-                          className="edit"
-                          data-toggle="modal"
+                          href='#editUserModal'
+                          className='edit'
+                          data-toggle='modal'
                           onClick={() => setSelectedUser(user)}
                         >
                           <EditIcon
                             width={20}
                             height={20}
-                            className="material-icons"
-                            data-toggle="tooltip"
-                            title="Editar"
+                            className='material-icons'
+                            data-toggle='tooltip'
+                            title='Editar'
                           />
                         </a>
                         <a
-                          href="#deleteUserModal"
-                          className="delete"
-                          data-toggle="modal"
+                          href='#deleteUserModal'
+                          className='delete'
+                          data-toggle='modal'
                           onClick={() => setSelectedUser(user)}
                         >
                           <DeleteIcon
                             width={20}
                             height={20}
-                            className="material-icons"
-                            data-toggle="tooltip"
-                            title="Deletar"
+                            className='material-icons'
+                            data-toggle='tooltip'
+                            title='Deletar'
                           />
                         </a>
                       </td>
@@ -121,7 +121,7 @@ const AdminArea = () => {
         </div>
       </div>
       <AddUserModal
-        id="addUserModal"
+        id='addUserModal'
         error={error}
         setError={setError}
         setMessage={setMessage}
@@ -130,7 +130,7 @@ const AdminArea = () => {
         setLoading={setLoading}
       />
       <EditUserModal
-        id="editUserModal"
+        id='editUserModal'
         user={selectedUser}
         error={error}
         setError={setError}
@@ -140,8 +140,8 @@ const AdminArea = () => {
         setLoading={setLoading}
       />
       <DeleteUserModal
-        id="deleteUserModal"
-        userId={selectedUser.id}
+        id='deleteUserModal'
+        userId={selectedUser.userId}
         error={error}
         setError={setError}
         setMessage={setMessage}

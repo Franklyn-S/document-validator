@@ -35,15 +35,14 @@ const ValidateDocument = () => {
       setMessage,
       setLoading
     );
-    console.log(file);
     setShowAlert(true);
   };
   return (
-    <div className="container">
+    <div className='container'>
       {loading ? (
-        <div className="container">
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Loading...</span>
+        <div className='container'>
+          <div className='spinner-border' role='status'>
+            <span className='sr-only'>Loading...</span>
           </div>
         </div>
       ) : (
@@ -54,47 +53,47 @@ const ValidateDocument = () => {
           setShow={setShowAlert}
         />
       )}
-      <div className="row center-block">
+      <div className='row center-block'>
         <ValidationFormStyle
-          className="text-center jumbotron"
+          className='text-center jumbotron'
           onSubmit={validateFile}
           noValidate
         >
           <h1>Valide os documentos</h1>
-          <div className="form-group">
-            <label htmlFor="fileId" className="control-label">
+          <div className='form-group'>
+            <label htmlFor='fileId' className='control-label'>
               Código do arquivo:
             </label>
             <input
-              type="text"
-              id="fileId"
-              name="fileId"
+              type='text'
+              id='fileId'
+              name='fileId'
               value={fileId}
-              className="form-control"
+              className='form-control'
               onChange={e => setFileId(e.target.value)}
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="fileId" className="control-label">
+          <div className='form-group'>
+            <label htmlFor='fileId' className='control-label'>
               Motivação da validação:
             </label>
             <input
-              type="text"
-              id="fileId"
-              name="fileId"
+              type='text'
+              id='fileId'
+              name='fileId'
               value={motivation}
-              className="form-control"
+              className='form-control'
               onChange={e => setMotivation(e.target.value)}
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="file" className="control-label">
+          <div className='form-group'>
+            <label htmlFor='file' className='control-label'>
               Arquivo:
             </label>
             <input
-              type="file"
-              id="file"
-              name="file"
+              type='file'
+              id='file'
+              name='file'
               onChange={e => {
                 const file = e.target.files[0];
                 setFile(file);
@@ -102,7 +101,7 @@ const ValidateDocument = () => {
               }}
             />
           </div>
-          <button className="btn btn-primary">Validar</button>
+          <button className='btn btn-primary'>Validar</button>
         </ValidationFormStyle>
       </div>
     </div>

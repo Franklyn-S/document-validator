@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -6,10 +6,10 @@ import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import Card from "../components/Card";
 import AddFileModal from "../components/Modals/AddFileModal";
 import useService from "../hooks/useService";
-import useAuth from "../hooks/useAuth";
 import Alert from "../components/Alert";
 import DeleteFileModal from "../components/Modals/DeleteFileModal";
-import { bucketS3 } from "../services";
+import UserContext from "../context/UserContext";
+import { Input } from "@material-ui/core";
 
 const Documents = () => {
   const [selectedFile, setSelectedFile] = useState({});
@@ -21,11 +21,13 @@ const Documents = () => {
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [loading, setLoading] = useState(false);
   const { getFilesByUser } = useService();
-  const { getAuthenticatedUser } = useAuth();
+  const { signedInUser } = useContext(UserContext);
+
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     if ((!error && !documents) || shouldUpdate) {
-      const userId = getAuthenticatedUser().pool.clientId;
+      const userId = signedInUser?.userId;
       setUserId(userId);
       getFilesByUser(
         userId,
@@ -43,15 +45,15 @@ const Documents = () => {
     error,
     message,
     shouldUpdate,
-    getAuthenticatedUser,
+    signedInUser,
     documents,
   ]);
   return (
     <>
       {loading ? (
-        <div className="container">
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Loading...</span>
+        <div className='container'>
+          <div className='spinner-border' role='status'>
+            <span className='sr-only'>Loading...</span>
           </div>
         </div>
       ) : (
@@ -62,59 +64,71 @@ const Documents = () => {
           setShow={setShowAlert}
         />
       )}
-      <div className="col-sm-6">
-        <a href="#addFileModal" className="btn btn-success" data-toggle="modal">
-          <AddIcon width={20} height={20} className="material-icons" />{" "}
+      <div className='col-sm-6'>
+        <a href='#addFileModal' className='btn btn-success' data-toggle='modal'>
+          <AddIcon width={20} height={20} className='material-icons' />{" "}
           <span>Adicionar Arquivo</span>
         </a>
+        <Input
+          style={{ marginLeft: "10px" }}
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          placeholder='Pesquise seus documentos'
+        />
       </div>
-      <div className="d-flex justify-content-start flex-wrap align-content-start">
+      <div className='d-flex justify-content-start flex-wrap align-content-start'>
         {documents &&
           documents.map(document => {
-            return (
-              <Card
-                key={document.id}
-                id={document.id}
-                title={document.name}
-                buttonName="Verificar Validações"
-                url={`/document-validator/document/${document.id}`}
-                buttonColor="btn-primary"
-              >
-                <ButtonLink
-                  download={document.name}
+            if (
+              document.name.toLowerCase().includes(search) ||
+              ("" + document.id).includes(search)
+            ) {
+              return (
+                <Card
+                  key={document.id}
+                  id={document.id}
                   title={document.name}
-                  onClick={() => window.open(bucketS3 + document.path)}
-                  rel="noreferrer noopener"
-                  className="delete"
-                  data-toggle="modal"
+                  buttonName='Verificar Validações'
+                  url={`/document-validator/document/${document.id}`}
+                  buttonColor='btn-primary'
                 >
-                  <CloudDownloadIcon
-                    width={20}
-                    height={20}
-                    className="material-icons"
-                    data-toggle="tooltip"
-                    title="Baixar"
-                  />
-                </ButtonLink>
-                <a
-                  href="#deleteFileModal"
-                  className="delete"
-                  data-toggle="modal"
-                  onClick={() => setSelectedFile(document)}
-                >
-                  <DeleteIcon
-                    width={20}
-                    height={20}
-                    className="material-icons"
-                    data-toggle="tooltip"
-                    title="Deletar"
-                  />
-                </a>
-              </Card>
-            );
+                  <ButtonLink
+                    download={document.name}
+                    title={document.name}
+                    onClick={() => window.open(document.url)}
+                    rel='noreferrer noopener'
+                    className='delete'
+                    data-toggle='modal'
+                  >
+                    <CloudDownloadIcon
+                      width={20}
+                      height={20}
+                      className='material-icons'
+                      data-toggle='tooltip'
+                      title='Baixar'
+                    />
+                  </ButtonLink>
+                  <a
+                    href='#deleteFileModal'
+                    className='delete'
+                    data-toggle='modal'
+                    onClick={() => setSelectedFile(document)}
+                  >
+                    <DeleteIcon
+                      width={20}
+                      height={20}
+                      className='material-icons'
+                      data-toggle='tooltip'
+                      title='Deletar'
+                    />
+                  </a>
+                </Card>
+              );
+            }
+            return null;
           })}
         <AddFileModal
-          id="addFileModal"
+          id='addFileModal'
           error={error}
           setError={setError}
           setMessage={setMessage}
@@ -124,7 +138,7 @@ const Documents = () => {
           userId={userId}
         />
         <DeleteFileModal
-          id="addFileModal"
+          id='addFileModal'
           fileId={selectedFile.id}
           error={error}
           setError={setError}

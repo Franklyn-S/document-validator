@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const RegisterContainer = styled.div`
   width: 90%;
@@ -9,11 +9,11 @@ export const RegisterContainer = styled.div`
   }
 `;
 
-export const ValidationContainer = styled.div`
-  display: block;
-  margin: auto;
+export const Icons = styled.div`
+  display: flex;
+  justify-content: space-evenly;
 `;
 
-export const ValidationButton = styled.button`
-  border: 1px solid #ccc;
+export const Button = styled.a`
+  border: none;
 `;

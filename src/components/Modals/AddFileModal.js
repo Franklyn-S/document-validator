@@ -28,7 +28,6 @@ const AddFileModal = ({
 
   const addFile = async e => {
     e.preventDefault();
-    console.log(file.name);
     await postFile(
       { UserId: userId, Filename: file.name, File: base64 },
       setError,
@@ -41,29 +40,29 @@ const AddFileModal = ({
   };
 
   return (
-    <div id="addFileModal" className="modal fade">
-      <div className="modal-dialog">
-        <div className="modal-content">
+    <div id='addFileModal' className='modal fade'>
+      <div className='modal-dialog'>
+        <div className='modal-content'>
           <form onSubmit={addFile}>
-            <div className="modal-header">
-              <h4 className="modal-title">Adicionar Arquivo</h4>
+            <div className='modal-header'>
+              <h4 className='modal-title'>Adicionar Arquivo</h4>
               <button
-                id="addModalCloseButton"
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-hidden="true"
+                id='addModalCloseButton'
+                type='button'
+                className='close'
+                data-dismiss='modal'
+                aria-hidden='true'
               >
                 &times;
               </button>
             </div>
-            <div className="form-group">
+            <div className='form-group'>
               <label>Arquivo:</label>
               <input
-                className="form-control"
-                type="file"
-                id="file"
-                name="file"
+                className='form-control'
+                type='file'
+                id='file'
+                name='file'
                 onChange={async e => {
                   const file = e.target.files[0];
                   setFile(file);
@@ -72,17 +71,17 @@ const AddFileModal = ({
                 required
               />
             </div>
-            <div className="modal-footer">
+            <div className='modal-footer'>
               <input
-                type="button"
-                className="btn btn-default"
-                data-dismiss="modal"
-                value="Cancelar"
+                type='button'
+                className='btn btn-default'
+                data-dismiss='modal'
+                value='Cancelar'
               />
               <input
-                type="submit"
-                className="btn btn-success"
-                value="Adicionar"
+                type='submit'
+                className='btn btn-success'
+                value='Adicionar'
               />
             </div>
           </form>

@@ -1,10 +1,8 @@
 import axios from "axios";
-import useAuth from "./useAuth";
-import { validationService, userService, fileService } from "../services";
+import bcrypt from "bcryptjs";
+import { baseUrl, API_KEY } from "../services";
 
 const useService = () => {
-  const { getAuthenticatedUser } = useAuth();
-
   const createValidation = (
     { fileId, base64, motivation },
     setError,
@@ -13,20 +11,18 @@ const useService = () => {
   ) => {
     setLoading(true);
     axios
-      .post(validationService, {
-        httpMethod: "POST",
+      .post(baseUrl + "/validation?key=" + API_KEY, {
         fileId,
         base64,
         motivation,
       })
       .then(result => {
-        console.log(result.data);
-        if (result?.data?.data?.statusCode !== "200") {
+        if (result?.statusCode !== "200") {
           setError(true);
         } else {
           setError(null);
         }
-        setMessage(result?.data?.data?.message);
+        setMessage(result.data);
       })
       .catch(err => {
         setMessage(
@@ -38,75 +34,83 @@ const useService = () => {
   };
 
   const getValidationsByDocumentId = (
-    id,
+    documentId,
     setError,
     setValidations,
     setLoading
   ) => {
-    console.log('test');
-    getAuthenticatedUser().getSession((err, session) => {
-      if (err) {
-        setError(err);
-        return;
-      }
-      setLoading(true);
-      axios
-        .get(validationService + id, {
-          headers: {
-            Authorization: session.getIdToken().getJwtToken(),
-          },
-        })
-        .then(result => {
-          console.log(result);
-          setValidations(result.data);
-          setError(null);
-        })
-        .catch(err => setError(err))
-        .finally(() => setLoading(false));
-    });
+    setLoading(true);
+    axios
+      .get(baseUrl + "/validations/" + documentId + "?key=" + API_KEY)
+      .then(result => {
+        setValidations(result.data);
+        setError(null);
+      })
+      .catch(err => setError(err))
+      .finally(() => setLoading(false));
   };
 
   const postUser = (
-    { name, username, password, email },
+    { fullName, username, password, email, phones },
     setError,
     setMessage,
     setShouldUpdate,
     setLoading
   ) => {
     setLoading(true);
-    axios
-      .post(userService, {
-        httpMethod: "POST",
-        name,
-        username,
-        password,
-        email,
-      })
-      .then(result => {
-        console.log(result.data);
-        setError(null);
-        setMessage(result?.data?.data?.message);
-        setShouldUpdate(true);
-      })
-      .catch(err => setError(err))
-      .finally(() => setLoading(false));
+    bcrypt.genSalt(10, function (err, salt) {
+      if (err) {
+        setError(err);
+      }
+      bcrypt.hash(password, salt, function (err, hash) {
+        if (err) {
+          setError(err);
+        }
+        axios
+          .post(baseUrl + "/users?key=" + API_KEY, {
+            fullName,
+            username,
+            password: hash,
+            email,
+            phones,
+          })
+          .then(result => {
+            setError(null);
+            setMessage("Usuário inserido com sucesso");
+            setShouldUpdate(true);
+          })
+          .catch(err => {
+            setError(true);
+            setMessage("Erro ao inserir usuário");
+          })
+          .finally(() => setLoading(false));
+      });
+    });
+  };
+
+  const getUserbyUsername = async (username, setLoading, setError) => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        `${baseUrl}/users/username/${username}?key=${API_KEY}`
+      );
+      return data;
+    } catch (err) {
+      if (err.message) {
+        setError(err.message);
+      }
+      return null;
+    } finally {
+      setLoading(false);
+    }
   };
 
   const getUsers = (setError, setUsers, setShowAlert, setLoading) => {
     setLoading(true);
     axios
-      .get(userService)
+      .get(baseUrl + "/users?key=" + API_KEY)
       .then(result => {
-        console.log(result);
-        setUsers(
-          result?.data?.data?.map(user => ({
-            id: user[0],
-            name: user[1],
-            username: user[2],
-            password: user[3],
-            email: user[4],
-          }))
-        );
+        setUsers(result?.data);
         setError(null);
       })
       .catch(err => {
@@ -125,12 +129,9 @@ const useService = () => {
   ) => {
     setLoading(true);
     axios
-      .delete(userService, {
-        data: { id, httpMethod: "DELETE" },
-      })
+      .delete(baseUrl + `/users/${id}?key=` + API_KEY)
       .then(result => {
-        console.log(result);
-        setMessage(result?.data?.data?.message || result?.data?.errorMessage);
+        setMessage(result?.data);
         setError(null);
         setShouldUpdate(true);
       })
@@ -139,32 +140,40 @@ const useService = () => {
   };
 
   const putUser = (
-    { id, name, username, password, email },
+    { id, fullName, username, password, email, phones },
     setError,
     setMessage,
     setShouldUpdate,
     setLoading
   ) => {
     setLoading(true);
-    axios
-      .put(userService, {
-        httpMethod: "PUT",
-        id,
-        name,
-        username,
-        password,
-        email,
-      })
-      .then(result => {
-        console.log(result);
-        setShouldUpdate(true);
-        setError(null);
-        setMessage(result.data?.data?.message);
-      })
-      .catch(err => {
+    bcrypt.genSalt(10, function (err, salt) {
+      if (err) {
         setError(err);
-      })
-      .finally(() => setLoading(false));
+      }
+      bcrypt.hash(password, salt, function (err, hash) {
+        if (err) {
+          setError(err);
+        }
+        axios
+          .put(baseUrl + `/users/${id}?key=` + API_KEY, {
+            fullName,
+            username,
+            password: hash,
+            email,
+            phones,
+          })
+          .then(result => {
+            setShouldUpdate(true);
+            setError(null);
+            setMessage(result.data);
+          })
+          .catch(err => {
+            setError(err);
+          })
+          .finally(() => setLoading(false));
+      });
+    });
   };
 
   const postFile = (
@@ -177,20 +186,18 @@ const useService = () => {
   ) => {
     setLoading(true);
     axios
-      .post(fileService, {
-        httpMethod: "POST",
-        UserId,
-        Filename,
-        File,
+      .post(baseUrl + "/documents?key=" + API_KEY, {
+        userId: UserId,
+        name: Filename,
+        base64: File,
       })
       .then(result => {
-        console.log(result.data);
-        if (result?.data?.data?.statusCode !== "200") {
+        if (result.status !== 200) {
           setError(true);
         } else {
           setError(null);
         }
-        setMessage(result?.data?.data?.message);
+        setMessage(result.data);
         setShouldUpdate(true);
       })
       .catch(err => setError(err))
@@ -209,18 +216,14 @@ const useService = () => {
     setLoading
   ) => {
     setLoading(true);
-    console.log("test");
     axios
-      .delete(fileService, {
-        data: { FileId: id, httpMethod: "DELETE" },
-      })
+      .delete(baseUrl + "/documents/" + id + "?key=" + API_KEY)
       .then(result => {
-        console.log(result);
-        setMessage(result?.data?.data?.message);
-        if (result?.data?.data?.statusCode !== "200") {
+        setMessage(result?.data);
+        if (result?.status !== "200") {
           setError(true);
         } else {
-          setError(null);
+          setError(false);
         }
         setShouldUpdate(true);
       })
@@ -241,14 +244,13 @@ const useService = () => {
   ) => {
     setLoading(true);
     axios
-      .get(fileService + userId)
+      .get(baseUrl + "/documents/" + userId + "?key=" + API_KEY)
       .then(result => {
-        console.log(result);
         setFiles(
           result?.data?.map(file => ({
-            id: file.FileId,
-            path: file.Path,
-            name: file.Path?.split("/")[1],
+            id: file.documentId,
+            url: file.url,
+            name: file.name,
           }))
         );
       })
@@ -269,6 +271,7 @@ const useService = () => {
     getUsers,
     deleteUser,
     putUser,
+    getUserbyUsername,
 
     postFile,
     getFilesByUser,

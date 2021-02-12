@@ -1,82 +1,84 @@
-import React from 'react';
-import useAuth from '../../hooks/useAuth';
+import React, { useContext } from "react";
+import UserContext from "../../context/UserContext";
 
 const Header = () => {
-  const { isAuthenticated, logout, isUserAdmin } = useAuth();
-
+  const { signedInUser, setSignedInUser } = useContext(UserContext);
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <nav className='navbar navbar-expand-lg navbar-light bg-light'>
       <a
-        className="navbar-brand"
+        className='navbar-brand'
         href={`${
-          isAuthenticated()
-            ? '/document-validator/documents'
-            : '/document-validator/'
+          signedInUser
+            ? "/document-validator/documents"
+            : "/document-validator/"
         }`}
       >
         Validador de documentos
       </a>
       <button
-        className="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
+        className='navbar-toggler'
+        type='button'
+        data-toggle='collapse'
+        data-target='#navbarNav'
+        aria-controls='navbarNav'
+        aria-expanded='false'
+        aria-label='Toggle navigation'
       >
-        <span className="navbar-toggler-icon"></span>
+        <span className='navbar-toggler-icon'></span>
       </button>
       <div
-        className="collapse navbar-collapse"
-        id="navbarNav"
-        itemID="navbarNav"
+        className='collapse navbar-collapse'
+        id='navbarNav'
+        itemID='navbarNav'
       >
-        <ul className="navbar-nav">
-          {isAuthenticated() && (
-            <li className="nav-item">
-              <a className="nav-link" href="/document-validator/documents">
+        <ul className='navbar-nav'>
+          {signedInUser && (
+            <li className='nav-item'>
+              <a className='nav-link' href='/document-validator/documents'>
                 Documentos
               </a>
             </li>
           )}
-          <li className="nav-item">
+          <li className='nav-item'>
             <a
-              className="nav-link"
-              href="/document-validator/validate-document"
+              className='nav-link'
+              href='/document-validator/validate-document'
             >
               Validar Documento
             </a>
           </li>
-          {isAuthenticated() && isUserAdmin() && (
-            <li className="nav-item">
-              <a className="nav-link" href="/document-validator/admin-area">
+          {signedInUser && signedInUser.isAdmin && (
+            <li className='nav-item'>
+              <a className='nav-link' href='/document-validator/admin-area'>
                 Area do Administrador
               </a>
             </li>
           )}
-          {isAuthenticated() && (
-            <li className="nav-item">
+          {signedInUser && (
+            <li className='nav-item'>
               <a
-                className="nav-link"
-                href="/document-validator/"
-                onClick={logout}
-                style={{ cursor: 'pointer' }}
+                className='nav-link'
+                href='/document-validator/'
+                onClick={() => {
+                  sessionStorage.setItem("user", null);
+                  setSignedInUser(null);
+                }}
+                style={{ cursor: "pointer" }}
               >
                 Logout
               </a>
             </li>
           )}
-          {!isAuthenticated() && (
-            <li className="nav-item">
-              <a className="nav-link" href="/document-validator/">
+          {!signedInUser && (
+            <li className='nav-item'>
+              <a className='nav-link' href='/document-validator/'>
                 Logar
               </a>
             </li>
           )}
-          {!isAuthenticated() && (
-            <li className="nav-item">
-              <a className="nav-link" href="/document-validator/register">
+          {!signedInUser && (
+            <li className='nav-item'>
+              <a className='nav-link' href='/document-validator/register'>
                 Cadastre-se
               </a>
             </li>
