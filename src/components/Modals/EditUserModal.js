@@ -52,7 +52,6 @@ const EditUserModal = ({
     } else {
       $("#editModalCloseButton").click();
     }
-    console.log("Usuário Editado");
   };
   return (
     <div id='editUserModal' className='modal fade'>

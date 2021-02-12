@@ -104,7 +104,6 @@ const RegisterForm = () => {
               onClick={() =>
                 setPhones(oldPhones => {
                   const newPhones = oldPhones.slice(0, -1);
-                  console.log(newPhones);
                   return newPhones;
                 })
               }
@@ -114,9 +113,7 @@ const RegisterForm = () => {
             <Button
               onClick={() =>
                 setPhones(oldPhones => {
-                  console.log(oldPhones);
                   const newPhones = [...oldPhones, ""];
-                  console.log(newPhones);
                   return newPhones;
                 })
               }
