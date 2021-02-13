@@ -10,7 +10,6 @@ const ValidateDocument = () => {
   const [message, setMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [file, setFile] = useState(undefined);
   const [base64, setBase64] = useState(undefined);
   const { createValidation } = useService();
 
@@ -39,6 +38,11 @@ const ValidateDocument = () => {
   };
   return (
     <div className='container'>
+      {error && error.message && (
+        <div className='alert alert-danger' role='alert'>
+          {error.message}
+        </div>
+      )}
       {loading ? (
         <div className='container'>
           <div className='spinner-border' role='status'>
@@ -47,7 +51,7 @@ const ValidateDocument = () => {
         </div>
       ) : (
         <Alert
-          type={error ? "danger" : "success"}
+          type={message !== "Arquivo é o mesmo!" ? "danger" : "success"}
           message={message}
           show={showAlert}
           setShow={setShowAlert}
@@ -96,7 +100,6 @@ const ValidateDocument = () => {
               name='file'
               onChange={e => {
                 const file = e.target.files[0];
-                setFile(file);
                 generateBase64(file);
               }}
             />

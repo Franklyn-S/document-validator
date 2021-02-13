@@ -135,8 +135,13 @@ const useService = () => {
         setError(null);
         setShouldUpdate(true);
       })
-      .catch(err => setError(err))
-      .finally(() => setLoading(false));
+      .catch(err => {
+        setError(err);
+        setMessage(err.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const putUser = (

@@ -20,6 +20,7 @@ const DocumentData = () => {
   return (
     <div className='container d-flex justify-content-start flex-wrap align-content-start'>
       {validations &&
+        typeof validations !== "string" &&
         validations.map(validation => (
           <Card
             key={validation.date}
@@ -30,7 +31,7 @@ const DocumentData = () => {
             buttonDisabled={validation.result}
           />
         ))}
-      {validations && validations.length === 0 && (
+      {validations && typeof validations === "string" && (
         <div className='alert alert-primary' role='alert'>
           O arquivo não possui validações
         </div>
