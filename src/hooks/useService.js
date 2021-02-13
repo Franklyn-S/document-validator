@@ -11,7 +11,7 @@ const useService = () => {
   ) => {
     setLoading(true);
     axios
-      .post(baseUrl + "/validation?key=" + API_KEY, {
+      .post(baseUrl + "/validations?key=" + API_KEY, {
         fileId,
         base64,
         motivation,
