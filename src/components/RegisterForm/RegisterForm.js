@@ -9,7 +9,7 @@ const RegisterForm = () => {
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [phones, setPhones] = useState([""]);
+  const [phones, setPhones] = useState([]);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 

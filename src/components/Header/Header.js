@@ -47,13 +47,13 @@ const Header = () => {
               Validar Documento
             </a>
           </li>
-          {signedInUser && signedInUser.isAdmin && (
+          {signedInUser?.isAdmin ? (
             <li className='nav-item'>
               <a className='nav-link' href='/document-validator/admin-area'>
                 Area do Administrador
               </a>
             </li>
-          )}
+          ) : null}
           {signedInUser && (
             <li className='nav-item'>
               <a

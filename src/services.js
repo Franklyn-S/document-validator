@@ -12,4 +12,5 @@ export const validationService = `https://khce4i3yp3.execute-api.us-east-1.amazo
 
 // GCP
 export const API_KEY = "AIzaSyBol5TD2q2GQ-7aIuokbED0N0sRHjUqvXk";
-export const baseUrl = "https://api-dot-document-validator.rj.r.appspot.com/v1";
+//export const baseUrl = "https://api-dot-document-validator.rj.r.appspot.com/v1";
+export const baseUrl = "http://localhost:8080/v1";
