@@ -2,6 +2,13 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Build docker image
+docker build -t franklynseabra/document-validator-front:dev .
+
+## Run docker image
+
+docker run -v ${pwd}:/app -v /app/node_modules -p 3001:3000 --rm franklynseabra/document-validator-front:dev
+
 ## Available Scripts
 
 In the project directory, you can run:
