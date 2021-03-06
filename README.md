@@ -3,6 +3,9 @@
 ### `docker compose up`
 
 ### Ports: back-end - 8080, front-end - 3000, mysql - 3306
+
+## Unzip credentials files at root folder
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
