@@ -1,0 +1,33 @@
+version: "2"
+
+services: 
+  front:
+    image: franklynseabra/document-validator-front:dev
+    restart: always
+    ports:
+      - 3000:3000
+    network_mode: "host"
+  mysql:
+    image: luancaarvalho/my-mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysqluser
+      - MYSQL_USER=mysqluser
+      - MYSQL_PASSWORD=mysql 
+    ports:
+      - 3306:3306
+    network_mode: "host"
+  back:
+    image: luancaarvalho/document-validator
+    restart: always
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/usr/src/app/document-validator-1e8cf051a5e8.json
+    depends_on:
+      - mysql
+    ports:
+      - 8080:8080
+    network_mode: "host"  
+      
+
+
+   
