@@ -21,16 +21,20 @@ const DocumentData = () => {
     <div className='container d-flex justify-content-start flex-wrap align-content-start'>
       {validations &&
         typeof validations !== "string" &&
-        validations.map(validation => (
-          <Card
-            key={validation.date}
-            title={new Date(Date.parse(validation.date)).toLocaleString()}
-            description={"Motivação: " + validation.motivation}
-            buttonName={validation.result ? "Successo" : "Falhou"}
-            buttonColor={validation.result ? "btn-success" : "btn-danger"}
-            buttonDisabled={validation.result}
-          />
-        ))}
+        validations.map(validation => {
+          return (
+            <Card
+              key={validation.date}
+              title={new Date(Date.parse(validation.date)).toLocaleString()}
+              description={"Motivação: " + validation.motivation}
+              buttonName={validation.result === "True" ? "Successo" : "Falhou"}
+              buttonColor={
+                validation.result === "True" ? "btn-success" : "btn-danger"
+              }
+              buttonDisabled={true}
+            />
+          );
+        })}
       {validations && typeof validations === "string" && (
         <div className='alert alert-primary' role='alert'>
           O arquivo não possui validações
