@@ -15,7 +15,7 @@ docker pull franklynseabra/document-validator-front:dev
 
 ## Run docker image
 
-docker run -v ${pwd}:/app -v /app/node_modules -p 3001:3000 --rm franklynseabra/document-validator-front:dev
+docker run -v ${pwd}:/app -v /app/node_modules -p 3000:3000 --rm franklynseabra/document-validator-front:dev
 
 ## Available Scripts
 
